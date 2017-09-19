@@ -2,11 +2,17 @@
 
 namespace App;
 
+use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
     protected $guarded = [];
+
+    public function path()
+    {
+        return "/threads/{$this->channel->slug}/{$this->id}";
+    }
 
     public function creator()
     {
@@ -28,8 +34,8 @@ class Thread extends Model
         $this->replies()->create($reply);
     }
 
-    public function path()
+    public function scopeFilter($query, $filters)
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return $filters->apply($query);
     }
 }
