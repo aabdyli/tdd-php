@@ -7,10 +7,10 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'body' => $faker->paragraph,
         'user_id' => function () {
-            return factory('App\User')->create()->id;
+            return factory('App\User')->create();
         },
         'channel_id' => function () {
-            return factory('App\Channel')->create()->id;
-        }
+            return factory('App\Channel')->create();
+        },
     ];
 });

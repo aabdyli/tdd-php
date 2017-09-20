@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            @foreach ($threads as $thread)
+            @forelse ($threads as $thread)
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="level">
@@ -20,7 +20,9 @@
                     </article>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <p class="text-center">This channel is Empty. Please write the first thread.</p>
+            @endforelse
         </div>
     </div>
 </div>

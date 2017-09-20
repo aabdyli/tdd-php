@@ -32,7 +32,6 @@ return PhpCsFixer\Config::create()
         'no_unused_imports' => true,
         'ordered_imports' => ['sortAlgorithm' => 'length'],
         'phpdoc_indent' => true,
-        'phpdoc_separation' => true,
         'phpdoc_order' => true,
         'phpdoc_return_self_reference' => true,
         'phpdoc_summary' => true,
@@ -41,7 +40,6 @@ return PhpCsFixer\Config::create()
         'semicolon_after_instruction' => true,
         'cast_spaces' => true,
         'single_blank_line_before_namespace' => true,
-        'ternary_operator_spaces' => true,
         'trailing_comma_in_multiline_array' => true,
         'phpdoc_no_package' => true,
         'phpdoc_var_without_name' => true,
@@ -49,22 +47,6 @@ return PhpCsFixer\Config::create()
         'general_phpdoc_annotation_remove' => [
             'annotations' => ["author", "package"]
         ],
-        'ordered_class_elements' => [
-            'use_trait',
-            'constant_public',
-            'constant_protected',
-            'constant_private',
-            'property_public',
-            'property_protected',
-            'property_private',
-            'construct',
-            'phpunit',
-            'method_public',
-            'method_protected',
-            'method_private',
-            'destruct',
-            'magic',
-        ]
     ])
     ->setFinder($finder)
     ;

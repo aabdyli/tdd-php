@@ -27,7 +27,7 @@ class ThreadFilters extends Filters
     }
 
     /**
-     * Filter the query by a given username
+     * Filter the query by a given username.
      *
      * @return $this
      */

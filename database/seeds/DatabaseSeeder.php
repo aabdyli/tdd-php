@@ -11,22 +11,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        create('User', [
+        factory('App\User', [
             'name' => 'John Doe',
-            'email' => 'john@mail.com'
-        ]);
-        create('User', [], 10);
-        create('Channel', [], 5);
+            'email' => 'john@mail.com',
+        ])->create();
+        factory('App\User', 10)->create();
+        factory('App\Channel', 5)->create();
         for ($i=0; $i < 50; $i++) {
-            create('Thread', [
+            factory('App\Thread')->create([
                 'user_id' => rand(1, 11),
-                'channel_id' => rand(1, 5)
+                'channel_id' => rand(1, 5),
             ]);
         }
         for ($i=0; $i < 200; $i++) {
-            create('Reply', [
+            factory('App\Reply')->create([
                 'thread_id' => rand(1, 50),
-                'user_id' => rand(1, 11)
+                'user_id' => rand(1, 11),
             ]);
         }
         // $this->call(UsersTableSeeder::class);

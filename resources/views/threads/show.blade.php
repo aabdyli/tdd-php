@@ -10,11 +10,13 @@
                         <div class="flex">
                             <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:{{ $thread->title }}
                         </div>
+                        @can ('update', $thread)
                         <form method="POST" action="{{ $thread->path() }}">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-link">Delete</button>
                         </form>
+                        @endcan
                     </div>
                 </div>
                 <div class="panel-body">

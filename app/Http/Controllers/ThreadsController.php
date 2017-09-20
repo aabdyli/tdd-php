@@ -52,13 +52,13 @@ class ThreadsController extends Controller
         $request->validate([
             'title' => 'required',
             'body' => 'required',
-            'channel_id' => 'required|exists:channels,id'
+            'channel_id' => 'required|exists:channels,id',
         ]);
         $thread = Thread::create([
             'title' => $request->title,
             'body' => $request->body,
             'user_id' => auth()->id(),
-            'channel_id' => $request->channel_id
+            'channel_id' => $request->channel_id,
         ]);
 
         return redirect($thread->path());
@@ -74,7 +74,7 @@ class ThreadsController extends Controller
     {
         return view('threads.show', [
             'thread' => $thread,
-            'replies' => $thread->replies()->paginate(15)
+            'replies' => $thread->replies()->paginate(15),
         ]);
     }
 
@@ -109,6 +109,8 @@ class ThreadsController extends Controller
      */
     public function destroy($channel, Thread $thread)
     {
+        $this->authorize('update', $thread);
+
         $thread->delete();
 
         if (request()->wantsJson()) {
@@ -119,8 +121,7 @@ class ThreadsController extends Controller
     }
 
     /**
-     * Returns a filtered collection of Threads
-     *
+     * Returns a filtered collection of Threads.
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getThreads(Channel $channel, ThreadFilters $filters)

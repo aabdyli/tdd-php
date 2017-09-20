@@ -47,7 +47,7 @@ class ReadThreadsTest extends TestCase
         // And a thread in this channel and another not in this channel
         $threadInChannel = create('Thread', ['channel_id' => $channel->id]);
         // When we hit the endpoint of the channel
-        $this->get('/threads/' . $channel->slug )
+        $this->get('/threads/' . $channel->slug)
         // We should see only the thread that belongs to this channel
             ->assertSee($threadInChannel->title)
             ->assertDontSee($this->thread->title);

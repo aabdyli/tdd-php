@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -11,14 +10,6 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
-    }
     public function path()
     {
         return "/threads/{$this->channel->slug}/{$this->id}";
@@ -49,5 +40,14 @@ class Thread extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder) {
+            $builder->withCount('replies');
+        });
     }
 }
