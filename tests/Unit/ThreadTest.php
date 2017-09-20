@@ -12,7 +12,7 @@ class ThreadTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->thread = create('App\Thread');
+        $this->thread = create('Thread');
     }
 
     /** @test */

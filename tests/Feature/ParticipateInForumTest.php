@@ -21,9 +21,9 @@ class ParticipateInForumTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create('App\Thread');
+        $thread = create('Thread');
 
-        $reply = make('App\Reply');
+        $reply = make('Reply');
         $this->post($thread->path() . '/replies', $reply->toArray());
 
         $this->get($thread->path())
@@ -34,9 +34,9 @@ class ParticipateInForumTest extends TestCase
     public function a_reply_requires_a_body()
     {
         $this->signIn();
-        $thread = create('App\Thread');
+        $thread = create('Thread');
 
-        $reply = make('App\Reply', ['body' => null]);
+        $reply = make('Reply', ['body' => null]);
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertSessionHasErrors('body');
     }

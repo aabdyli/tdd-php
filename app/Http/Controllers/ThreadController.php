@@ -18,18 +18,23 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Database\Eloquent\Collection
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
+
+        if (request()->wantsJson()) {
+            return $threads;
+        }
+
         return view('threads.index', compact('threads'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -40,7 +45,7 @@ class ThreadController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -63,7 +68,7 @@ class ThreadController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show($channleId, Thread $thread)
     {
@@ -107,6 +112,11 @@ class ThreadController extends Controller
         //
     }
 
+    /**
+     * Returns a filtered collection of Threads
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getThreads(Channel $channel, ThreadFilters $filters)
     {
         $threads = Thread::latest()->filter($filters);
@@ -115,8 +125,6 @@ class ThreadController extends Controller
             $threads->where('channel_id', $channel->id);
         }
 
-        $threads = $threads->get();
-
-        return $threads;
+        return $threads->get();
     }
 }

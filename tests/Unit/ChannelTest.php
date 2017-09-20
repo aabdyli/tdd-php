@@ -12,8 +12,8 @@ class ChannelTest extends TestCase
     /** @test */
     public function a_channel_has_many_threads()
     {
-        $channel = create('App\Channel');
-        $thread = create('App\Thread', ['channel_id' => $channel->id]);
+        $channel = create('Channel');
+        $thread = create('Thread', ['channel_id' => $channel->id]);
 
         $this->assertTrue($channel->threads->contains($thread));
     }
