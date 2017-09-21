@@ -74,7 +74,7 @@ class CreateThreadsTest extends TestCase
 
         // We should not have the thread listed in the database
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        // $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
     /** @test */
