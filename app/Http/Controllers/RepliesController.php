@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,14 @@ class RepliesController extends Controller
             'body' => $request->body,
             'user_id' => auth()->id(),
         ]);
+
+        return back()->with('flash', 'You replied to the thread!');
+    }
+
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+        $reply->delete();
 
         return back();
     }

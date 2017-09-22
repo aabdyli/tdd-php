@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -75,6 +76,8 @@ class CreateThreadsTest extends TestCase
         // We should not have the thread listed in the database
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 
     /** @test */
@@ -89,7 +92,6 @@ class CreateThreadsTest extends TestCase
             ->assertStatus(403);
     }
 
-    /** @test */
     public function threads_may_be_deleted_by_those_who_have_permission()
     {
         // TODO
