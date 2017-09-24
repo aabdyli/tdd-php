@@ -31,6 +31,7 @@
             <form action="{{ $thread->path() }}/replies" method="POST" class="form">
                 {{ csrf_field() }}
                 <div class="form-group">
+                    <label for="body">Leave a reply</label>
                     <textarea name="body" id="body" cols="30" rows="5" class="form-control" placeholder="Add your thought"></textarea>
                 </div>
                 <div class="form-group">
