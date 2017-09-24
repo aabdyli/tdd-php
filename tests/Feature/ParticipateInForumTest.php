@@ -60,7 +60,7 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $reply = create('Reply', ['user_id' => auth()->id()]);
 
-        $this->delete('replies/' . $reply->id)->assertStatus(302);
+        $this->delete('replies/' . $reply->id);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
