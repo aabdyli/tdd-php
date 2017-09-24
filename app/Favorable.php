@@ -4,6 +4,13 @@ namespace App;
 
 trait Favorable
 {
+    protected static function bootFavorable()
+    {
+        static::deleting(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favorited');
@@ -12,7 +19,7 @@ trait Favorable
     public function favorite()
     {
         $attributes = ['user_id' => auth()->id()];
-        if (! $this->favorites()->where($attributes)->exists()) {
+        if ( ! $this->favorites()->where($attributes)->exists()) {
             $this->favorites()->create($attributes);
         }
     }
@@ -20,12 +27,12 @@ trait Favorable
     public function unfavorite()
     {
         $attributes = ['user_id' => auth()->id()];
-        $this->favorites()->where($attributes)->delete();
+        $this->favorites()->where($attributes)->get()->each->delete();
     }
 
     public function isFavorited()
     {
-        return !! $this->favorites->where('user_id', auth()->id())->count();
+        return ! ! $this->favorites->where('user_id', auth()->id())->count();
     }
 
     public function getIsFavoritedAttribute()
