@@ -24,10 +24,13 @@ class RepliesController extends Controller
         $request->validate([
             'body' => 'required',
         ]);
-        $thread->addReply([
+        $reply = $thread->addReply([
             'body' => $request->body,
             'user_id' => auth()->id(),
         ]);
+        if ($request->wantsJson()) {
+            return $reply->load('owner');
+        }
 
         return back()->with('flash', 'You replied to the thread!');
     }
