@@ -49,4 +49,5 @@ return PhpCsFixer\Config::create()
         ],
     ])
     ->setFinder($finder)
+    ->setUsingCache(false)
     ;

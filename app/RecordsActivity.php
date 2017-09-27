@@ -4,7 +4,6 @@ namespace App;
 
 trait RecordsActivity
 {
-
     protected static function bootRecordsActivity()
     {
         if (auth()->guest()) {
@@ -24,6 +23,7 @@ trait RecordsActivity
     {
         return ['created'];
     }
+
     protected function recordActivity($event)
     {
         $this->activity()->create([
@@ -40,6 +40,7 @@ trait RecordsActivity
     protected function getActivityType($event)
     {
         $type = strtolower((new \ReflectionClass($this))->getShortName());
+
         return "{$event}_{$type}";
     }
 }
