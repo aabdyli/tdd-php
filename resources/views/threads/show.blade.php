@@ -25,7 +25,6 @@
                     </div>
                 </div>
                 <replies
-                    :data="{{ $replies }}"
                     @removed="repliesCount--"
                     @added="repliesCount++"></replies>
             </div>
