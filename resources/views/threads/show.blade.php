@@ -34,6 +34,7 @@
                         This thread was published {{ $thread->created_at->diffForHumans() }} by
                         <a href="#">{{ $thread->creator->name }}</a>, and currently
                         has <span v-text="repliesCount"></span>.
+                        <subscribe-button :active="@json($thread->isSubscribedTo)"></subscribe-button>
                     </div>
                 </div>
             </div>
