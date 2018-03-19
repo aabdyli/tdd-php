@@ -33,9 +33,20 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
+    }
+
     public function activity()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    public function unredNotifications()
+    {
+        return $this->notifications()
+                    ->whereNull('read_at');
     }
 
     public function getRouteKeyName()
