@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use Notification;
 use Tests\TestCase;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ThreadTest extends TestCase
@@ -51,13 +53,29 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
+    public function a_thread_notifies_all_registered_users()
+    {
+        Notification::fake();
+
+        $this->signIn()->
+               thread
+               ->subscribe()
+               ->addReply([
+                    'body' => 'Test',
+                    'user_id' => '1',
+                ]);
+
+        Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
+    }
+
+    /** @test */
     public function a_thread_can_be_subscribed_to()
     {
         // Given we have a thread
         // When the user subscribes to the thread
         $this->thread->subscribe($userId = 1);
         // Then we should be able to fetch all threads that the user has subscribed
-       $this->assertCount(
+        $this->assertCount(
            1,
            $this->thread->subscriptions()->where('user_id', $userId)->get()
         );
@@ -76,7 +94,6 @@ class ThreadTest extends TestCase
            0,
            $this->thread->subscriptions()->where('user_id', $userId)->get()
         );
-
     }
 
     /** @test */
@@ -85,7 +102,7 @@ class ThreadTest extends TestCase
         $thread = create('Thread');
 
         $this->signIn();
-        
+
         $this->assertFalse($thread->isSubscribedTo);
 
         $thread->subscribe();
