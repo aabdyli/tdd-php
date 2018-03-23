@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Inspections\Spam;
 use App\Reply;
 use App\Thread;
+use App\Rules\SpamFree;
 
 class RepliesController extends Controller
 {
@@ -23,27 +23,28 @@ class RepliesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread, Spam $spam)
+    public function store($channelId, Thread $thread)
     {
-        request()->validate(['body' => 'required']);
+        try {
+            request()->validate(['body' => ['required', new SpamFree]]);
 
-        $spam->detect(request('body'));
-
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id(),
-        ]);
-
-        if (request()->wantsJson()) {
-            return $reply->load('owner');
+            $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => auth()->id(),
+            ]);
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
         }
 
-        return back()->with('flash', 'You replied to the thread!');
+        return $reply->load('owner');
     }
 
     public function destroy(Reply $reply)
     {
         $this->authorize('update', $reply);
+
         $reply->delete();
 
         return response(['status' => 'Replie deleted']);
@@ -52,6 +53,16 @@ class RepliesController extends Controller
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-        $reply->update(['body' => request('body')]);
+
+        try {
+
+            request()->validate(['body' => ['required', new SpamFree]]);
+    
+            $reply->update(['body' => request('body')]);
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
+        }
     }
 }

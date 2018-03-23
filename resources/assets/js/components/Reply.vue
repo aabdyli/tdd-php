@@ -57,9 +57,11 @@
             update() {
                 axios.patch('/replies/' + this.data.id, {
                     body: this.body
-                });
-                this.editing = false;
-                flash('Updated!')
+                }).then(() => {
+                    this.editing = false;
+                    flash('Updated!');
+                })
+                .catch(error => flash(error.response.data, 'danger'));
             },
             destroy() {
                 axios.delete('/replies/' + this.data.id);

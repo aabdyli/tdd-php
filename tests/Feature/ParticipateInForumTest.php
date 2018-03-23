@@ -34,11 +34,13 @@ class ParticipateInForumTest extends TestCase
     public function a_reply_requires_a_body()
     {
         $this->signIn();
+
         $thread = create('Thread');
 
         $reply = make('Reply', ['body' => null]);
+
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
+            ->assertStatus(422);
     }
 
     /** @test */
@@ -82,11 +84,11 @@ class ParticipateInForumTest extends TestCase
     {
         $reply = create('Reply');
 
-        $this->patch('replies/' . $reply->id)
+        $this->patch('/replies/' . $reply->id)
         ->assertRedirect('login');
 
         $this->signIn()
-            ->patch('replies/' . $reply->id)
+            ->patch('/replies/' . $reply->id)
             ->assertStatus(403);
     }
 
@@ -103,8 +105,7 @@ class ParticipateInForumTest extends TestCase
             'body' => 'Yahoo Customer Support'
         ]);
 
-        $this->expectException(\Exception::class);
-
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
     }
 }
