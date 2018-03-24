@@ -39,7 +39,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make('Reply', ['body' => null]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())
             ->assertStatus(422);
     }
 
@@ -95,8 +95,6 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     public function replies_that_contain_span_may_not_be_created()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $thread = create('Thread');
@@ -105,7 +103,7 @@ class ParticipateInForumTest extends TestCase
             'body' => 'Yahoo Customer Support',
         ]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())
             ->assertStatus(422);
     }
 

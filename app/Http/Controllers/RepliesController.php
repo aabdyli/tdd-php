@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Reply;
 use App\Thread;
 use App\Rules\SpamFree;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Forms\CreatePostForm;
 
 class RepliesController extends Controller
 {
@@ -24,29 +24,9 @@ class RepliesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostForm $form)
     {
-        if (Gate::denies('create', new Reply)) {
-            return response(
-                'You are replying to much please wait for your next reply.', 422
-            );
-        }
-        try {
-            $this->authorize('create', new Reply);
-            
-            request()->validate(['body' => ['required', new SpamFree]]);
-
-            $reply = $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id(),
-            ]);
-        } catch (\Exception $e) {
-            return response(
-                'Sorry, your reply could not be saved at this time.', 422
-            );
-        }
-
-        return $reply->load('owner');
+        return $form->persist($thread);
     }
 
     public function destroy(Reply $reply)
@@ -63,13 +43,13 @@ class RepliesController extends Controller
         $this->authorize('update', $reply);
 
         try {
-
             request()->validate(['body' => ['required', new SpamFree]]);
-    
+
             $reply->update(['body' => request('body')]);
         } catch (\Exception $e) {
             return response(
-                'Sorry, your reply could not be saved at this time.', 422
+                'Sorry, your reply could not be saved at this time.',
+                422
             );
         }
     }
