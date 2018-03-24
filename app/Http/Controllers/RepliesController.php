@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Reply;
 use App\Thread;
 use App\Rules\SpamFree;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -25,7 +26,14 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
+        if (Gate::denies('create', new Reply)) {
+            return response(
+                'You are replying to much please wait for your next reply.', 422
+            );
+        }
         try {
+            $this->authorize('create', new Reply);
+            
             request()->validate(['body' => ['required', new SpamFree]]);
 
             $reply = $thread->addReply([
