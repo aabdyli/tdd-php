@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReplyTest extends TestCase
 {
@@ -26,16 +26,29 @@ class ReplyTest extends TestCase
 
         $reply->created_at = Carbon::now()->subMonth();
 
-        $this->assertFalse($reply->wasJustPublished());        
+        $this->assertFalse($reply->wasJustPublished());
     }
 
     /** @test */
     public function it_can_detect_all_mentioned_users_in_the_body()
     {
-        $reply = create('Reply', [
-            'body' => '@janeDoe wants to meet @johnDoe'
+        $reply = new \App\Reply([
+            'body' => '@janeDoe wants to meet @johnDoe',
         ]);
 
-        $this->assertEquals(['janeDoe', 'johnDoe'],$reply->mentionedUsers());
+        $this->assertEquals(['janeDoe', 'johnDoe'], $reply->mentionedUsers());
+    }
+
+    /** @test */
+    public function it_wraps_mentioned_usernames_in_the_body_within_anchor_tags()
+    {
+        $reply = new \App\Reply([
+            'body' => 'Hello @janeDoe.',
+        ]);
+
+        $this->assertEquals(
+            'Hello <a href="/profiles/janeDoe">@janeDoe</a>.',
+            $reply->body
+        );
     }
 }

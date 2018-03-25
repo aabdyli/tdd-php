@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Forms;
+namespace App\Http\Requests;
 
+use App\User;
 use App\Rules\SpamFree;
 use Illuminate\Support\Facades\Gate;
 use App\Exceptions\ThrottleException;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Notifications\YouWereMentioned;
-use App\User;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePostForm extends FormRequest
+class CreatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,9 +40,6 @@ class CreatePostForm extends FormRequest
 
     public function persist($thread)
     {
-        return $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id(),
-            ])->load('owner');
+
     }
 }
