@@ -6,6 +6,8 @@ use App\Rules\SpamFree;
 use Illuminate\Support\Facades\Gate;
 use App\Exceptions\ThrottleException;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Notifications\YouWereMentioned;
+use App\User;
 
 class CreatePostForm extends FormRequest
 {
@@ -39,8 +41,8 @@ class CreatePostForm extends FormRequest
     public function persist($thread)
     {
         return $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id(),
-        ])->load('owner');
+                'body' => request('body'),
+                'user_id' => auth()->id(),
+            ])->load('owner');
     }
 }

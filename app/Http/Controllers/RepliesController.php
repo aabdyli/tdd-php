@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Reply;
 use App\Thread;
 use App\Rules\SpamFree;
 use App\Http\Forms\CreatePostForm;
+use App\Notifications\YouWereMentioned;
 
 class RepliesController extends Controller
 {
