@@ -42,3 +42,7 @@
     </div>
 </thread-view>
 @endsection
+
+@section('styles')
+<link rel="stylesheet" href="/css/vendor/jquery.atwho.css">
+@endsection

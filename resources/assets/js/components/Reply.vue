@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <div class="level">
                 <h5 class="flex">
-                    <a :href="'/profiles'+data.owner.name" v-text="data.owner.name"></a> said <span v-text="ago"></span>
+                    <a :href="'/profiles/'+data.owner.name" v-text="data.owner.name"></a> said <span v-text="ago"></span>
                 </h5>
                 <div>
                     <favorite :reply="data" v-if="this.signedIn"></favorite>
@@ -20,7 +20,7 @@
                     <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
                 </form>
             </div>
-            <div v-else v-text="body"></div>
+            <div v-else v-html="body"></div>
         </div>
         <!-- @can('update', $reply) -->
         <div class="panel-footer level" v-if="canUpdate">
