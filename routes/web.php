@@ -33,3 +33,4 @@ Route::get('profiles/{user}/notifications', 'UserNotificationsController@index')
 Route::delete('profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
 Route::get('home', 'HomeController@index')->name('home');
+Route::post('api/users/{user}/avatar', 'Api\UsersAvatarController@store')->name('avatar');

@@ -8,9 +8,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="level">
-                            <div class="flex">
+                            <img src="{{ $thread->creator->avatar() }}" alt="" class="mr-1" width="23" height="25">
+                            <span class="flex">
                                 <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:{{ $thread->title }}
-                            </div>
+                            </span>
+
                             @can ('update', $thread)
                             <form method="POST" action="{{ $thread->path() }}">
                                 {{ csrf_field() }}
