@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="level">
-                            <img src="{{ $thread->creator->avatar() }}" alt="" class="mr-1" width="23" height="25">
+                            <img src="{{ $thread->creator->avatar_path }}" alt="" class="mr-1" width="23" height="25">
                             <span class="flex">
                                 <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:{{ $thread->title }}
                             </span>
